@@ -16,12 +16,30 @@ covered by Windows**. What survived is small, safe, and reversible.
   permanently left alone, so it **never opens a modify handle to a game** (nothing for an anti‑cheat to flag).
   Anti‑cheat services (Vanguard, EAC, BattlEye, ACE, GameGuard, FACEIT) are on a hard never‑touch list.
 - ❌ Only ever **lowers** background priority, never kills a process, never raises priority.
-- ❌ No registry/timer/power "tweaks", no debloating, no telemetry, **no network access** — it's all local.
 - ❌ It does **not** magically add FPS. It reduces CPU contention. If nothing in the background misbehaves,
   it does nothing — and that is correct.
 
+### ✅ Clean & transient — it does NOT modify Windows
+This is the big one. FocusBalance **does not edit the registry, system files, services, or any "special"
+Windows area, and it forges/patches nothing.** It only changes process **priorities at runtime** through the
+standard Windows API, and **restores them when it closes**. Nothing persists after you exit.
+
+So unlike debloaters, "custom/optimized Windows" images, registry tweak packs, or service‑disabling scripts,
+**it cannot leave your Windows in a modified or unstable state.** There is nothing to "undo" and nothing that
+can rot over time — close the app and your system is exactly as it was. No telemetry, no network access; all
+local.
+
 ### Requirements
 - Windows 11 (x64), .NET 8 Desktop Runtime, run **as administrator** (needed to lower other processes' priority).
+
+### Tested on
+Verified only on the **author's single machine**, with **2 games (Zenless Zone Zero, Arknights: Endfield)**.
+Anything outside this is unverified — please report issues.
+- Windows 11 **25H2** (build 26200.8655)
+- **Ryzen 9600X** — PBO + per‑core Curve Optimizer, 88 W PPT *(author's per‑core CO 24/26/16/18/24/21 is
+  silicon‑specific — do NOT copy)*
+- **RTX 4070 (MSI Ventus)** — undervolt 0.950 V @ 2700 MHz (MSI Afterburner), NVIDIA driver **610.62**
+- **DDR5 6000** CL36‑38‑38‑72 @ 1.29 V (A‑DATA, Samsung die), **FCLK 2000, 1:1**
 
 ### How to use it (important — one session per game)
 FocusBalance is meant to run for **one gaming session at a time**:
@@ -39,12 +57,13 @@ While it runs you can watch the **Action log** (what got restrained / restored),
 list, and tune the threshold (default **8 %** of total CPU ≈ one full thread on a 12‑thread CPU) and strength
 (BelowNormal / Idle). Press **Measure DPC latency** any time for a read‑only driver‑latency report.
 
-### ⚠️ Disclaimer
-This software is provided **"AS IS", with no warranty and no liability** (see [LICENSE](LICENSE)). It runs with
-administrator rights and changes process priorities on your system. **You use it at your own risk.** While it is
-designed to never touch games or anti‑cheat processes, the author is **not responsible** for any anti‑cheat
-action, data loss, instability, or other damage. If you play competitive games with aggressive anti‑cheat and
-have any doubt, don't run it.
+### ⚠️ Disclaimer (important)
+**This is free software, and the author accepts NO responsibility or liability of any kind.** It is provided
+**"AS IS", with no warranty** (see [LICENSE](LICENSE)). It runs with administrator rights and changes process
+priorities on your system — **you use it entirely at your own risk.** While it is designed never to touch games
+or anti‑cheat processes and never to modify Windows, the author is **not responsible** for any anti‑cheat
+action, ban, data loss, instability, or any other damage or consequence whatsoever. If you play competitive
+games with aggressive anti‑cheat and have any doubt, don't run it.
 
 ---
 
