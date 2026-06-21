@@ -33,6 +33,9 @@ internal sealed class ProBalanceEngine : IDisposable
         public ProcessPriorityClass DemoteTo { get; set; } = ProcessPriorityClass.BelowNormal;
         /// <summary>Tick period.</summary>
         public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
+        /// <summary>A just-seen process is left alone for this long (lets a launching game/app grab the
+        /// foreground / show its window and become protected before it could ever be demoted).</summary>
+        public TimeSpan Grace { get; set; } = TimeSpan.FromSeconds(15);
     }
 
     public sealed record DemotedView(int Pid, string Name, double CpuPercent,
@@ -44,12 +47,14 @@ internal sealed class ProBalanceEngine : IDisposable
         public required string Name;
         public TimeSpan LastCpu;
         public DateTime LastSample;
+        public DateTime FirstSeen;
         public double CpuPercent;
         public int OverThresholdTicks;
         public int UnderThresholdTicks;
         public bool Demoted;
         public ProcessPriorityClass Original;
     }
+
 
     private readonly Settings _cfg;
     private readonly ActionLog _log;
@@ -131,15 +136,21 @@ internal sealed class ProBalanceEngine : IDisposable
         lock (_gate) { _foregroundPid = fgPid; _foregroundName = fgName == "(none)" ? "(none)" : fgName; }
         if (fgPid > 0) _everForeground.Add(fgPid); // remember it so we never touch it again, even on alt-tab
 
+        // Apps that own a visible, titled window (games — even while loading in the background — browsers,
+        // anything you'd click into) are NEVER restrained. Only windowless background work is eligible. This
+        // is what stops a game from being demoted while it loads before you've focused it.
+        var windowed = Native.PidsWithVisibleWindows();
+
         foreach (var proc in SafeGetProcesses())
         {
             int pid = proc.Id;
             seen.Add(pid);
 
-            // Never touch: ourselves, the foreground app, anything that has EVER been foreground (the game /
-            // your apps — so we never open a modify handle an anti-cheat could flag), the idle "process", or
-            // anything we already know we cannot access. Protected NAMES are filtered just below.
-            if (pid == _selfPid || pid == fgPid || pid == 0 || _everForeground.Contains(pid) || _cannotTouch.Contains(pid)) { proc.Dispose(); continue; }
+            // Never touch: ourselves, the foreground app, anything with a visible window, anything that has
+            // EVER been foreground (so we never open a modify handle an anti-cheat could flag), the idle
+            // "process", or anything we already know we cannot access. Protected NAMES are filtered below.
+            if (pid == _selfPid || pid == fgPid || pid == 0 || windowed.Contains(pid)
+                || _everForeground.Contains(pid) || _cannotTouch.Contains(pid)) { proc.Dispose(); continue; }
 
             TimeSpan cpu;
             string name;
@@ -153,7 +164,7 @@ internal sealed class ProBalanceEngine : IDisposable
             {
                 if (!_tracked.TryGetValue(pid, out t!))
                 {
-                    t = new Tracked { Proc = proc, Name = name, LastCpu = cpu, LastSample = now };
+                    t = new Tracked { Proc = proc, Name = name, LastCpu = cpu, LastSample = now, FirstSeen = now };
                     _tracked[pid] = t;
                     continue; // need two samples to compute a rate; measure next tick
                 }
@@ -188,6 +199,7 @@ internal sealed class ProBalanceEngine : IDisposable
 
         if (!t.Demoted)
         {
+            if (DateTime.UtcNow - t.FirstSeen < _cfg.Grace) return; // just appeared — could be a launching game/app
             if (t.OverThresholdTicks >= _cfg.SustainTicks)
                 Demote(t);
         }

@@ -22,8 +22,10 @@ the small tool that came out of that.
 > smaller benefit, or none at all. It's not a guarantee for your system; it's the honest fix that worked for me.
 
 **What it does NOT do (by design):**
-- ❌ Never touches your **game** or anything you've used — any process that has been in the foreground is
-  permanently left alone, so it **never opens a modify handle to a game** (nothing for an anti‑cheat to flag).
+- ❌ Never touches your **game** or any app you've opened. **Any process that owns a visible window** — your
+  game, *even while it loads in the background before you've clicked into it* — is left alone, plus a brief
+  startup grace period and a permanent skip once it's been focused. So it **only ever restrains windowless
+  background work** and **never opens a modify handle to a game** (nothing for an anti‑cheat to flag).
   Anti‑cheat services (Vanguard, EAC, BattlEye, ACE, GameGuard, FACEIT) are on a hard never‑touch list.
 - ❌ Only ever **lowers** background priority, never kills a process, never raises priority.
 - ❌ It does **not** magically add FPS. It reduces CPU contention. If nothing in the background misbehaves,

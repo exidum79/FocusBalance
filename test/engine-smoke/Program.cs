@@ -31,6 +31,7 @@ try
         SustainTicks = 1,
         DemoteTo = ProcessPriorityClass.Idle,
         Interval = TimeSpan.FromMilliseconds(400),
+        Grace = TimeSpan.Zero, // no startup grace in the test so the hog is evaluated immediately
     }, log);
 
     engine.Start();
