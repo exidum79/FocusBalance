@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>focusbalance</AssemblyName>
+    <RootNamespace>GameOptimizer</RootNamespace>
+    <Product>FocusBalance (GameOptimizer)</Product>
+    <AssemblyTitle>FocusBalance</AssemblyTitle>
+    <Company>GameOptimizer</Company>
+    <!-- Admin needed to lower the priority of OTHER users' / system processes -->
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- DPC/ISR latency engine (DpcLatencyMonitor.cs, ModuleMap.cs) drives the "Measure DPC" button. -->
+    <PackageReference Include="Microsoft.Diagnostics.Tracing.TraceEvent" Version="3.1.16" />
+  </ItemGroup>
+
+</Project>

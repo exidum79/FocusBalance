@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>GameOptimizer</RootNamespace>
+    <!-- NO admin manifest: this test only restrains a child process we own, which needs no elevation. -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Compile the REAL engine sources (not copies) so the test exercises shipping code. -->
+    <Compile Include="..\..\src\focusbalance\ProBalanceEngine.cs" />
+    <Compile Include="..\..\src\focusbalance\Native.cs" />
+    <Compile Include="..\..\src\focusbalance\ProtectedProcesses.cs" />
+    <Compile Include="..\..\src\focusbalance\ActionLog.cs" />
+  </ItemGroup>
+
+</Project>

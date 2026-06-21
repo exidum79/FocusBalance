@@ -1,0 +1,12 @@
+# Build output (regenerable)
+**/bin/
+**/obj/
+
+# Runtime logs
+**/logs/
+*.log
+
+# OS / editor cruft
+Thumbs.db
+.vs/
+*.user
