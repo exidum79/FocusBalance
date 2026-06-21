@@ -29,16 +29,23 @@ So unlike debloaters, "custom/optimized Windows" images, registry tweak packs, o
 can rot over time — close the app and your system is exactly as it was. No telemetry, no network access; all
 local.
 
+It also **touches zero Windows security settings.** It does not disable or modify Defender, Core Isolation /
+Memory Integrity, SmartScreen, UAC, or the firewall — unlike "custom Windows" builds that gut security for
+speed. Your security posture is untouched.
+
 ### Requirements
 - Windows 11 (x64), .NET 8 Desktop Runtime, run **as administrator** (needed to lower other processes' priority).
 
-### Tested on
-Verified only on the **author's single machine**, with **2 games (Zenless Zone Zero, Arknights: Endfield)**.
-Anything outside this is unverified — please report issues.
-- Windows 11 **25H2** (build 26200.8655)
-- **Ryzen 9600X** — PBO + per‑core Curve Optimizer, 88 W PPT *(author's per‑core CO 24/26/16/18/24/21 is
-  silicon‑specific — do NOT copy)*
-- **RTX 4070 (MSI Ventus)** — undervolt 0.950 V @ 2700 MHz (MSI Afterburner), NVIDIA driver **610.62**
+### Works with any game · tested on
+Background suppression is **game‑agnostic** — it restrains background processes regardless of which game is in
+front, so it works with **essentially any game**. The author tested it on **Zenless Zone Zero** and **Arknights:
+Endfield**. It's intentionally small and **complete — no upgrades planned and nothing to configure**; just run it.
+
+Author's machine:
+- Windows 11 **25H2** (build 26200.8655), **Core Isolation / Memory Integrity OFF**
+- **Ryzen 9600X** — PBO + per‑core Curve Optimizer, 88 W PPT *(author's per‑core CO values are silicon‑specific — do NOT copy)*
+- **RTX 4070 (MSI Ventus)** — undervolt 0.950 V @ 2700 MHz (MSI Afterburner); NVIDIA driver **610.62**,
+  **clean‑installed (display driver + PhysX only)**, tuned with **NVIDIA Profile Inspector**, **Shader Cache = Unlimited**
 - **DDR5 6000** CL36‑38‑38‑72 @ 1.29 V (A‑DATA, Samsung die), **FCLK 2000, 1:1**
 
 ### How to use it (important — one session per game)
@@ -55,7 +62,11 @@ FocusBalance is meant to run for **one gaming session at a time**:
 
 While it runs you can watch the **Action log** (what got restrained / restored), the **Currently restrained**
 list, and tune the threshold (default **8 %** of total CPU ≈ one full thread on a 12‑thread CPU) and strength
-(BelowNormal / Idle). Press **Measure DPC latency** any time for a read‑only driver‑latency report.
+(BelowNormal / Idle).
+
+**Measure DPC latency** is a separate diagnostic — **only use it if you suspect a driver/hardware problem**
+(e.g. stutter or audio dropouts you can't otherwise explain). It's read‑only and you don't need it for normal
+use; most people will never have to touch it.
 
 ### ⚠️ Disclaimer (important)
 **This is free software, and the author accepts NO responsibility or liability of any kind.** It is provided
