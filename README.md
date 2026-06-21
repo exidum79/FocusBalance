@@ -11,6 +11,16 @@ It is built on the opposite philosophy of most "optimizer" tools: instead of pil
 mostly do nothing, every idea here was researched and **most were rejected as placebo, harmful, or already
 covered by Windows**. What survived is small, safe, and reversible.
 
+### Why this exists
+I was looking forward to the **DLSS update in Zenless Zone Zero 3.0** — but it shipped with terrible stuttering,
+hitching, and frame drops. After trying everything, I found the cause on my system wasn't the game or my
+hardware: it was **background‑process contention in Windows** stealing CPU time from the game. FocusBalance is
+the small tool that came out of that.
+
+> **A note on results (please read):** this helped *on my machine*. If your Windows version/build, hardware, or
+> setup differs from mine — **especially if you run a custom / modified / "optimized" Windows** — you may see a
+> smaller benefit, or none at all. It's not a guarantee for your system; it's the honest fix that worked for me.
+
 **What it does NOT do (by design):**
 - ❌ Never touches your **game** or anything you've used — any process that has been in the foreground is
   permanently left alone, so it **never opens a modify handle to a game** (nothing for an anti‑cheat to flag).
