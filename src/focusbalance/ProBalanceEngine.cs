@@ -21,10 +21,12 @@ internal sealed class ProBalanceEngine : IDisposable
     // ORIGINAL priority we saved, so changing DemoteTo only affects future restraints — always reversible.
     public sealed class Settings
     {
-        /// <summary>% of TOTAL CPU a background process must sustain before it is restrained.</summary>
-        public double DemotePercent { get; set; } = 8.0;
+        /// <summary>% of TOTAL CPU a background process must sustain before it is restrained.
+        /// 6% ≈ ~0.7 of a logical thread on a 12-thread CPU — catches moderate background hogs, not just
+        /// a process pegging a whole thread (8%), so fewer contention events slip through.</summary>
+        public double DemotePercent { get; set; } = 6.0;
         /// <summary>Restore once a restrained process drops below this % of total CPU.</summary>
-        public double RestorePercent { get; set; } = 3.0;
+        public double RestorePercent { get; set; } = 2.5;
         /// <summary>Consecutive ticks over the demote threshold before acting (anti-flap).</summary>
         public int SustainTicks { get; set; } = 2;
         /// <summary>Priority class restrained processes are lowered to.</summary>

@@ -71,8 +71,8 @@ FocusBalance is meant to run for **one gaming session at a time**:
    different games. (Launch FB → game 1 → close both; launch FB → game 2 → close both, and so on.)
 
 While it runs you can watch the **Action log** (what got restrained / restored), the **Currently restrained**
-list, and tune the threshold (default **8 %** of total CPU ≈ one full thread on a 12‑thread CPU) and strength
-(BelowNormal / Idle).
+list, and tune the threshold (default **6 %** of total CPU ≈ ~0.7 of a thread on a 12‑thread CPU; raise it to
+catch only heavier hogs, lower it to be more aggressive) and strength (BelowNormal / Idle).
 
 **Measure DPC latency** is a separate diagnostic — **only use it if you suspect a driver/hardware problem**
 (e.g. stutter or audio dropouts you can't otherwise explain). It's read‑only and you don't need it for normal
