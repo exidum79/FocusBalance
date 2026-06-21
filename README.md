@@ -68,6 +68,11 @@ list, and tune the threshold (default **8 %** of total CPU ≈ one full thread o
 (e.g. stutter or audio dropouts you can't otherwise explain). It's read‑only and you don't need it for normal
 use; most people will never have to touch it.
 
+When you do use it, **measure _while the game is running and the stutter is happening_**: start your game, pick
+a duration (15 / 30 / 60 s), press the button, and **reproduce the stutter during that window** (play, move the
+mouse, load a level). DPC/ISR spikes only appear under the workload that triggers them — measuring on an idle
+desktop tells you nothing. The report then names the worst‑offending driver.
+
 ### ⚠️ Disclaimer (important)
 **This is free software, and the author accepts NO responsibility or liability of any kind.** It is provided
 **"AS IS", with no warranty** (see [LICENSE](LICENSE)). It runs with administrator rights and changes process
